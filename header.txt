@@ -1,0 +1,66 @@
+
+      ##############################
+      ##                          ##
+      ##  Force Field Definition  ##
+      ##                          ##
+      ##############################
+
+
+forcefield              CHARMM22
+
+vdwtype                 LENNARD-JONES
+radiusrule              ARITHMETIC
+radiustype              R-MIN
+radiussize              RADIUS
+epsilonrule             GEOMETRIC
+vdw-14-scale            1.0
+chg-14-scale            1.0
+electric                332.0716
+dielectric              1.0
+
+
+      #############################
+      ##                         ##
+      ##  Literature References  ##
+      ##                         ##
+      #############################
+
+
+A. D. MacKerrell, Jr., et al., "All-Atom Empirical Potential for
+Molecular Modeling and Dynamics Studies of Proteins", J. Phys. Chem. B,
+102, 3586-3616 (1998)  [CHARMM22 Protein]
+
+N. Foloppe and A. D. MacKerell, Jr., "All-Atom Empirical Force Field
+for Nucleic Acids: I. Parameter Optimization Based on Small Molecule
+and Condensed Phase Macromolecular Target Data", J. Comput. Chem.,
+21, 86-104 (2000)  [CHARMM Nucleic Acid]
+
+Current parameter values are available from the CHARMM parameter site
+maintained by Alex MacKerell at the University of Maryland, Baltimore,
+http://mackerell.umaryland.edu/CHARMM_ff_params.html
+
+
+      #############################
+      ##                         ##
+      ##  Atom Type Definitions  ##
+      ##                         ##
+      #############################
+
+
+   ######################################################
+   ##                                                  ##
+   ##  TINKER Atom Class Numbers to CHARMM Atom Names  ##
+   ##                                                  ##
+   ##     1  HA      11  CA      21  CY      31  NR3   ##
+   ##     2  HP      12  CC      22  CPT     32  NY    ##
+   ##     3  H       13  CT1     23  CT      33  NC2   ##
+   ##     4  HB      14  CT2     24  NH1     34  O     ##
+   ##     5  HC      15  CT3     25  NH2     35  OH1   ##
+   ##     6  HR1     16  CP1     26  NH3     36  OC    ##
+   ##     7  HR2     17  CP2     27  N       37  S     ##
+   ##     8  HR3     18  CP3     28  NP      38  SM    ##
+   ##     9  HS      19  CH1     29  NR1               ##
+   ##    10  C       20  CH2     30  NR2               ##
+   ##                                                  ##
+   ######################################################
+
