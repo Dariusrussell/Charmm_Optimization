@@ -1,6 +1,6 @@
 from io import StringIO
 
-from Tinker.tinker_atom import *
+from Tinker.atom import *
 
 
 class TinkerXYZ:
