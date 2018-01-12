@@ -1,4 +1,5 @@
 import re
+import numpy as np
 
 
 class TinkerAtom:
@@ -29,3 +30,10 @@ class TinkerAtom:
             return TinkerAtom(attributes[0], attributes[1], attributes[2:5], attributes[5], attributes[6:])
         else:
             return TinkerAtom(attributes[0], attributes[1], attributes[2:5], attributes[5], [])
+
+    def translate(self, vector):
+        newx = self.xyz[0] + vector[0]
+        newy = self.xyz[1] + vector[1]
+        newz = self.xyz[2] + vector[2]
+
+        return TinkerAtom(self.atom_id, self.atom_type, [newx, newy, newz], self.ff_type, self.partners)
