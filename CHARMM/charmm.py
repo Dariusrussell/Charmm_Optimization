@@ -1,7 +1,6 @@
-from CHARMM.charmm_attributes import *
 from io import StringIO
 
-import re
+from CHARMM.charmm_attributes import *
 
 
 class Charmm:
@@ -85,8 +84,13 @@ class Charmm:
             elif re.match(r'biotype ', line):
                 self.biotypes.append(CharmmBiotype.parse(line))
 
+    def write_to_file(self, file_name):
+        f = open(file_name, 'w')
+        f.write(str(self))
+        f.close()
+        return file_name
 
-charmm = Charmm('../charmm22_2380.prm', '../header.txt')
-file = open('../charmm22_test.prm', 'w')
-file.write(str(charmm))
-file.close()
+# charmm = Charmm('../charmm22_2380.prm', '../header.txt')
+# file = open('../charmm22_test.prm', 'w')
+# file.write(str(charmm))
+# file.close()

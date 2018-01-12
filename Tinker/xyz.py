@@ -47,8 +47,8 @@ class TinkerXYZ:
         return size, comment, atoms
 
     def translate_by_vector(self, np_array):
-        if type(vector) != np.ndarray:
-            raise ValueError("Vector: " + str(type(vector)) + " is not a numpy array")
+        if type(np_array) != np.ndarray:
+            raise ValueError("Vector: " + str(type(np_array)) + " is not a numpy array")
 
         if np_array.shape[0] != len(self.atoms):
             raise ValueError(
@@ -64,13 +64,18 @@ class TinkerXYZ:
 
         return TinkerXYZ(len(translated_atoms), self.comment, translated_atoms)
 
+    def write_to_file(self, file_name):
+        f = open(file_name, 'w')
+        f.write(str(self))
+        f.close()
+        return file_name
 
-tinker = TinkerXYZ.from_file('../cyclohexane.xyz')
-
-vector = np.array([10, 10, 10])
-
-for i in range(1, tinker.size):
-    vector = np.vstack((vector, [10, 10, 10]))
-
-translated_tinker = tinker.translate_by_vector(vector)
-print(translated_tinker)
+# tinker = TinkerXYZ.from_file('../cyclohexane.xyz')
+#
+# vector = np.array([10, 10, 10])
+#
+# for i in range(1, tinker.size):
+#     vector = np.vstack((vector, [10, 10, 10]))
+#
+# translated_tinker = tinker.translate_by_vector(vector)
+# print(translated_tinker)
