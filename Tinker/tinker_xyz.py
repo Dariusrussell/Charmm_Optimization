@@ -1,5 +1,5 @@
-import re
 from io import StringIO
+
 from Tinker.tinker_atom import *
 
 
@@ -52,7 +52,7 @@ class TinkerXYZ:
                 "Vector List: " + str(len(list_of_vectors)) + " does not match the number of atoms: " + str(
                     len(self.atoms)))
         translated_atoms = []
-        for i in range(0,len(list_of_vectors)):
+        for i in range(0, len(list_of_vectors)):
             translated_atoms.append(self.atoms[i].translate(list_of_vectors[i]))
 
         return TinkerXYZ(len(translated_atoms), self.comment, translated_atoms)
