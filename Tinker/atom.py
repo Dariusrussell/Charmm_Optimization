@@ -1,12 +1,17 @@
 import re
 
+import numpy as np
+
 
 class TinkerAtom:
 
     def __init__(self, atom_id, atom_type, xyz, ff_type, partners):
         self.atom_id = int(atom_id)
         self.atom_type = atom_type
-        self.xyz = [float(i) for i in xyz]
+        if type(xyz) != np.ndarray:
+            self.xyz = np.array([float(i) for i in xyz])
+        else:
+            self.xyz = xyz
         self.ff_type = int(ff_type)
         self.partners = [int(i) for i in partners]
         self.partners_by_ref = []
@@ -31,8 +36,9 @@ class TinkerAtom:
             return TinkerAtom(attributes[0], attributes[1], attributes[2:5], attributes[5], [])
 
     def translate(self, vector):
-        newx = self.xyz[0] + vector[0]
-        newy = self.xyz[1] + vector[1]
-        newz = self.xyz[2] + vector[2]
-
-        return TinkerAtom(self.atom_id, self.atom_type, [newx, newy, newz], self.ff_type, self.partners)
+        if type(vector) != np.ndarray:
+            raise ValueError("Vector: " + str(type(vector)) + " is not a numpy array")
+        if self.xyz.shape != vector.shape:
+            raise ValueError("Vector: " + vector + " is not a valid xyz vector")
+        new_vector = self.xyz + vector
+        return TinkerAtom(self.atom_id, self.atom_type, new_vector, self.ff_type, self.partners)

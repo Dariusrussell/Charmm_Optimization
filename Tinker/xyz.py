@@ -46,13 +46,31 @@ class TinkerXYZ:
                 atoms.append(TinkerAtom.parse(line.strip()))
         return size, comment, atoms
 
-    def translate_by_vector(self, list_of_vectors):
-        if len(list_of_vectors) != len(self.atoms):
+    def translate_by_vector(self, np_array):
+        if type(vector) != np.ndarray:
+            raise ValueError("Vector: " + str(type(vector)) + " is not a numpy array")
+
+        if np_array.shape[0] != len(self.atoms):
             raise ValueError(
-                "Vector List: " + str(len(list_of_vectors)) + " does not match the number of atoms: " + str(
+                "Vector List: " + str(np_array.shape[0]) + " does not match the number of atoms: " + str(
                     len(self.atoms)))
+
+        if np_array.shape[1] != 3:
+            raise ValueError("Vector List does not have a 2nd dimension of length 3 corresponding to xyz direction")
+
         translated_atoms = []
-        for i in range(0, len(list_of_vectors)):
-            translated_atoms.append(self.atoms[i].translate(list_of_vectors[i]))
+        for i in range(0, len(np_array)):
+            translated_atoms.append(self.atoms[i].translate(np_array[i]))
 
         return TinkerXYZ(len(translated_atoms), self.comment, translated_atoms)
+
+
+tinker = TinkerXYZ.from_file('../cyclohexane.xyz')
+
+vector = np.array([10, 10, 10])
+
+for i in range(1, tinker.size):
+    vector = np.vstack((vector, [10, 10, 10]))
+
+translated_tinker = tinker.translate_by_vector(vector)
+print(translated_tinker)
