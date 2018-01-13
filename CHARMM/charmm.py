@@ -90,7 +90,7 @@ class Charmm:
         f.close()
         return file_name
 
-# charmm = Charmm('../charmm22_2380.prm', '../header.txt')
+# charmm = Charmm('../charmm22_start.prm', '../header.txt')
 # file = open('../charmm22_test.prm', 'w')
 # file.write(str(charmm))
 # file.close()

@@ -26,8 +26,7 @@ class CharmmAngle:
         else:
             raise ValueError("Invalid Angle input: ", string)
 
-
-# f = open('charmm22_2380.prm', 'r')
+# f = open('charmm22_start.prm', 'r')
 # param_file = f.read().split('\n')
 #
 # charmm_atoms = []

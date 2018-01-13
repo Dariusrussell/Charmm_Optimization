@@ -68,16 +68,22 @@ class GaussianFreq:
 
             if vector_match:
                 if vibration1_vector is None:
-                    vibration1_vector = np.array([vector_match.group(1), vector_match.group(2), vector_match.group(3)])
-                    vibration2_vector = np.array([vector_match.group(4), vector_match.group(5), vector_match.group(6)])
-                    vibration3_vector = np.array([vector_match.group(7), vector_match.group(8), vector_match.group(9)])
+                    vibration1_vector = np.array([np.float64(vector_match.group(1)), np.float64(vector_match.group(2)),
+                                                  np.float64(vector_match.group(3))])
+                    vibration2_vector = np.array([np.float64(vector_match.group(4)), np.float64(vector_match.group(5)),
+                                                  np.float64(vector_match.group(6))])
+                    vibration3_vector = np.array([np.float64(vector_match.group(7)), np.float64(vector_match.group(8)),
+                                                  np.float64(vector_match.group(9))])
                 else:
                     vibration1_vector = np.vstack(
-                        [vibration1_vector, [vector_match.group(1), vector_match.group(2), vector_match.group(3)]])
+                        [vibration1_vector, [np.float64(vector_match.group(1)), np.float64(vector_match.group(2)),
+                                             np.float64(vector_match.group(3))]])
                     vibration2_vector = np.vstack(
-                        [vibration2_vector, [vector_match.group(4), vector_match.group(5), vector_match.group(6)]])
+                        [vibration2_vector, [np.float64(vector_match.group(4)), np.float64(vector_match.group(5)),
+                                             np.float64(vector_match.group(6))]])
                     vibration3_vector = np.vstack(
-                        [vibration3_vector, [vector_match.group(7), vector_match.group(8), vector_match.group(9)]])
+                        [vibration3_vector, [np.float64(vector_match.group(7)), np.float64(vector_match.group(8)),
+                                             np.float64(vector_match.group(9))]])
         vibrations.append(Vibration(vibration1_id, vibration1_frequency, vibration1_vector))
         vibrations.append(Vibration(vibration2_id, vibration2_frequency, vibration2_vector))
         vibrations.append(Vibration(vibration3_id, vibration3_frequency, vibration3_vector))

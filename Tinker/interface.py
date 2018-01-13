@@ -85,10 +85,12 @@ class Vibrate:
 
             if vector_match:
                 if current_vector is None:
-                    current_vector = np.array([[vector_match.group(1), vector_match.group(2), vector_match.group(3)]])
+                    current_vector = np.array([np.float64(vector_match.group(1)), np.float64(vector_match.group(2)),
+                                               np.float64(vector_match.group(3))])
                 else:
                     current_vector = np.vstack([current_vector,
-                                                [vector_match.group(1), vector_match.group(2), vector_match.group(3)]])
+                                                [np.float64(vector_match.group(1)), np.float64(vector_match.group(2)),
+                                                 np.float64(vector_match.group(3))]])
         vibrations_list.append(Vibration(current_id, current_frequency, current_vector))
 
         os.chdir('..')
@@ -103,7 +105,7 @@ class Vibration:
         if type(vector) != np.ndarray:
             raise ValueError("Vector must be of type np.ndarray")
         else:
-            self.vector = vector
+            self.vector = np.squeeze(vector)
 
     def __str__(self):
         buf = StringIO()

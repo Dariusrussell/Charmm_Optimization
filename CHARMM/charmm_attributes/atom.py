@@ -29,8 +29,7 @@ class CharmmAtom:
         else:
             raise ValueError("Invalid Atom Input: ", string)
 
-
-# f = open('charmm22_2380.prm', 'r')
+# f = open('charmm22_start.prm', 'r')
 # param_file = f.read().split('\n')
 #
 # charmm_atoms = []
