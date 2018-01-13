@@ -44,7 +44,7 @@ def pair_vibrations(gaussian_freq, tinker_freq):
     for gauss in gaussian_freq.vibrations_list:
         min_angle_sum = sys.float_info.max
         best_match = None
-        for tinker in tinker_freq.vibration_list:
+        for tinker in tinker_freq.vibration_list[6:]:
             current_angle_sum = 0
             for i in range(0, gauss.vector.shape[0]):
                 current_angle_sum += compute_dot_product(gauss.vector[i], tinker.vector[i])
@@ -59,6 +59,8 @@ param = Charmm(os.path.join(os.getcwd(), 'charmm22_start.prm'), os.path.join(os.
 water_xyz = TinkerXYZ.from_file(os.path.join(os.getcwd(), 'tinker_water.xyz'))
 gauss_vibrations = GaussianFreq.from_file(os.path.join(os.getcwd(), 'gauss_freq.log'))
 tinker_calc_freq = Vibrate.from_file(water_xyz, param, 'tinker_water.xyz', 'charmm_water.prm', 'tinker_water_freq')
+
+print(tinker_calc_freq.vibration_list[7])
 
 pairs = pair_vibrations(gauss_vibrations, tinker_calc_freq)
 
