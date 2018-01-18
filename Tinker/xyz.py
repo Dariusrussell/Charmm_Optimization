@@ -5,15 +5,16 @@ from Tinker.atom import *
 
 class TinkerXYZ:
 
-    def __init__(self, size, comment, atoms):
+    def __init__(self, size, comment, atoms, path_to_original=""):
         self.size = size
         self.comment = comment
         self.atoms = atoms
+        self.path = path_to_original
 
     @classmethod
     def from_file(cls, file_path):
         (size, comment, atoms) = cls.parse(file_path)
-        return cls(size, comment, atoms)
+        return cls(size, comment, atoms, file_path)
 
     def __str__(self):
         ret = StringIO()
@@ -69,6 +70,9 @@ class TinkerXYZ:
         f.write(str(self))
         f.close()
         return file_name
+
+    def position_vector(self):
+        return np.array([[atom.xyz[0], atom.xyz[1], atom.xyz[2]] for atom in self.atoms])
 
 # tinker = TinkerXYZ.from_file('../cyclohexane.xyz')
 #

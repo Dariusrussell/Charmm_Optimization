@@ -116,3 +116,12 @@ class Vibration:
         buf.write(str(self.vector))
         buf.write("\n")
         return buf.getvalue()
+
+
+def minimize(file_path, parameter_path, cutoff):
+    result = subprocess.run(["minimize", file_path, parameter_path, str(cutoff)], stdout=subprocess.PIPE)
+    result_string = result.stdout.decode('utf-8')
+    new_name = file_path[:-4] + "_min.xyz"
+    os.rename(file_path + '_2', new_name)
+
+    return new_name, result_string
