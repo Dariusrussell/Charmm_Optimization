@@ -58,9 +58,8 @@ class TinkerXYZ:
 
         if np_array.shape[1] != 3:
             raise ValueError("Vector List does not have a 2nd dimension of length 3 corresponding to xyz direction")
-
         translated_atoms = []
-        for i in range(0, len(np_array)):
+        for i in range(0, np_array.shape[0]):
             translated_atoms.append(self.atoms[i].translate(np_array[i]))
 
         return TinkerXYZ(len(translated_atoms), self.comment, translated_atoms)

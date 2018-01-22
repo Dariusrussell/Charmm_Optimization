@@ -43,6 +43,8 @@ class VibrationPair:
         return buf.getvalue()
 
 
+# Check if vectors are out of phase by 180
+
 def pair_vibrations(gaussian_freq, tinker_freq):
     vibration_pairs = []
     for gauss in gaussian_freq.vibrations_list:
@@ -51,7 +53,11 @@ def pair_vibrations(gaussian_freq, tinker_freq):
         for tinker in tinker_freq.vibration_list[6:]:
             current_angle_sum = 0
             for i in range(0, gauss.vector.shape[0]):
-                current_angle_sum += abs(compute_dot_product(gauss.vector[i], tinker.vector[i]))
+                angle = compute_dot_product(gauss.vector[i], tinker.vector[i])
+                angle_rot_180 = compute_dot_product(gauss.vector[i], tinker.vector[i] * -1)
+                if angle_rot_180 < angle:
+                    angle = angle_rot_180
+                current_angle_sum += angle
             if current_angle_sum < min_angle_sum:
                 min_angle_sum = current_angle_sum
                 best_match = tinker
@@ -63,6 +69,9 @@ param = Charmm(os.path.join(os.getcwd(), 'charmm22_start.prm'), os.path.join(os.
 water_xyz = TinkerXYZ.from_file(os.path.join(os.getcwd(), 'tinker_water.xyz'))
 gauss_vibrations = GaussianFreq.from_file(os.path.join(os.getcwd(), 'gauss_freq.log'))
 tinker_calc_freq = Vibrate.from_file(water_xyz, param, 'tinker_water.xyz', 'charmm_water.prm', 'tinker_water_freq')
+
+water_xyz.translate_by_vector(tinker_calc_freq.vibration_list[7].vector).write_to_file("tinker_water_vib8.xyz")
+water_xyz.translate_by_vector(gauss_vibrations.vibrations_list[1].vector).write_to_file("gauss_water_vib2.xyz")
 
 pairs = pair_vibrations(gauss_vibrations, tinker_calc_freq)
 
