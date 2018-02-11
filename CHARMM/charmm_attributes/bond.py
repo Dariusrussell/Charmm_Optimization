@@ -1,3 +1,4 @@
+import random
 import re
 
 
@@ -26,6 +27,11 @@ class CharmmBond:
         else:
             raise ValueError("Invalid Bond input: ", string)
 
+    def random_edit(self, percentage):
+        rand = random.uniform(-percentage, percentage)
+        change = rand / 100.0
+        return CharmmBond(self.atom_class1, self.atom_class2, (1 + change) * self.uk1,
+                          (1 + change) * self.uk2)
 
 # f = open('charmm22_2380.prm', 'r')
 # param_file = f.read().split('\n')

@@ -2,7 +2,7 @@ from rmsd.calculate_rmsd import *
 from rmsd.calculate_rmsd import __doc__
 from rmsd.calculate_rmsd import __version__
 
-__all__ = [ \
+__all__ = [
     "kabsch_rmsd",
     "kabsch_rotate",
     "kabsch",

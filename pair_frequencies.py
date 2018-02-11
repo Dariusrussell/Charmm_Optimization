@@ -20,7 +20,7 @@ def compute_dot_product(a, b):
 
 class VibrationPair:
 
-    def __init__(self, gaussian_vibration, tinker_vibration, angle_diff):
+    def __init__(self, gaussian_vibration, tinker_vibration, angle_diff=None):
         self.gaussian_vibration = gaussian_vibration
         self.tinker_vibration = tinker_vibration
         self.angle_diff = angle_diff
@@ -61,11 +61,11 @@ def pair_vibrations(gaussian_freq, tinker_freq):
             if current_angle_sum < min_angle_sum:
                 min_angle_sum = current_angle_sum
                 best_match = tinker
-        vibration_pairs.append(VibrationPair(gauss, best_match, min_angle_sum))
+        vibration_pairs.append(VibrationPair(gauss, best_match, angle_diff=min_angle_sum))
     return vibration_pairs
 
 
-param = Charmm(os.path.join(os.getcwd(), 'charmm22_start.prm'), os.path.join(os.getcwd(), 'header.txt'))
+param = Charmm.from_file(os.path.join(os.getcwd(), 'charmm22_start.prm'), os.path.join(os.getcwd(), 'header.txt'))
 water_xyz = TinkerXYZ.from_file(os.path.join(os.getcwd(), 'tinker_water.xyz'))
 gauss_vibrations = GaussianFreq.from_file(os.path.join(os.getcwd(), 'gauss_freq.log'))
 tinker_calc_freq = Vibrate.from_file(water_xyz, param, 'tinker_water.xyz', 'charmm_water.prm', 'tinker_water_freq')

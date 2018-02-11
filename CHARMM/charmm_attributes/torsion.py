@@ -1,4 +1,5 @@
 import re
+
 from CHARMM.charmm_attributes.torsion_subgroup import *
 
 
@@ -17,7 +18,7 @@ class CharmmTorsion:
 
     def __str__(self):
         # torsion      13   14   35    3            1.300    0.0  1   0.300    0.0  2   0.420    0.0  3
-        substr = '{:>7}   {:>5}{:>5}{:>5}{:>5}'.format(self.type, self.atom_class1,self.atom_class2,self.atom_class3,
+        substr = '{:>7}   {:>5}{:>5}{:>5}{:>5}'.format(self.type, self.atom_class1, self.atom_class2, self.atom_class3,
                                                        self.atom_class4)
         for subgroup in self.subgroups:
             substr += subgroup.__str__()
@@ -37,7 +38,9 @@ class CharmmTorsion:
         else:
             raise ValueError("Invalid Torsion input: ", string)
 
-
+    def random_edit(self, percentage):
+        return CharmmTorsion(self.atom_class1, self.atom_class2, self.atom_class3, self.atom_class4,
+                             [subgroup.random_edit(percentage) for subgroup in self.subgroups])
 # f = open('charmm22_2380.prm', 'r')
 # param_file = f.read().split('\n')
 #

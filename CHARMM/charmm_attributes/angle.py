@@ -16,7 +16,7 @@ class CharmmAngle:
     def __str__(self):
         # angle         3   10   34      50.00     121.70
         return '{:>5}     {:>5}{:>5}{:>5}{:>11.2f}{:>11.2f}'.format(self.type, self.atom_class1, self.atom_class2,
-                                                                    self.atom_class3, self.uk1,self.uk2)
+                                                                    self.atom_class3, self.uk1, self.uk2)
 
     @staticmethod
     def parse(string):

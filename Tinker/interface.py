@@ -125,3 +125,28 @@ def minimize(file_path, parameter_path, cutoff):
     os.rename(file_path + '_2', new_name)
 
     return new_name, result_string
+
+
+class VibrationPair:
+
+    def __init__(self, gaussian_vibration, tinker_vibration, angle_diff=None):
+        self.gaussian_vibration = gaussian_vibration
+        self.tinker_vibration = tinker_vibration
+        self.angle_diff = angle_diff
+
+    def __str__(self):
+        buf = StringIO()
+        buf.write("Gaussian Vector: ")
+        buf.write(str(self.gaussian_vibration.vibration_id))
+        buf.write("\n")
+        buf.write(str(self.gaussian_vibration))
+        buf.write("\n\n")
+        buf.write("Tinker Vector: ")
+        buf.write(str(self.tinker_vibration.vibration_id))
+        buf.write("\n")
+        buf.write(str(self.tinker_vibration))
+        buf.write("\n")
+        buf.write(str(self.angle_diff))
+        buf.write("\n")
+        buf.write("------------------\n")
+        return buf.getvalue()

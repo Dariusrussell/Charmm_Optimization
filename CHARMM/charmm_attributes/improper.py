@@ -1,3 +1,4 @@
+import random
 import re
 
 
@@ -17,8 +18,8 @@ class CharmmImproper:
     def __str__(self):
         # improper     10   13   24   34           120.00       0.00
         return '{:>8}  {:>5}{:>5}{:>5}{:>5}      {:>11.2f}{:>11.2f}'.format(self.type, self.atom_class1,
-                                                                            self.atom_class2,self.atom_class3,
-                                                                            self.atom_class4, self.uk1,self.uk2)
+                                                                            self.atom_class2, self.atom_class3,
+                                                                            self.atom_class4, self.uk1, self.uk2)
 
     @staticmethod
     def parse(string):
@@ -30,6 +31,12 @@ class CharmmImproper:
         else:
             raise ValueError("Invalid UreyBrad input: ", string)
 
+    def random_edit(self, percentage):
+        rand = random.uniform(-percentage, percentage)
+        change = rand / 100.0
+        return CharmmImproper(self.atom_class1, self.atom_class2, self.atom_class3, self.atom_class4,
+                              (1 + change) * self.uk1,
+                              (1 + change) * self.uk2)
 
 # f = open('charmm22_2380.prm', 'r')
 # param_file = f.read().split('\n')

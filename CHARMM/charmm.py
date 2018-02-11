@@ -5,21 +5,29 @@ from CHARMM.charmm_attributes import *
 
 class Charmm:
 
-    def __init__(self, file_path, header_path):
+    def __init__(self, file_path, header_path, atoms, vdws, vdw14s, bonds, angles, ureybrads, torsions,
+                 impropers, charges, biotypes):
+        self.header_path = header_path
         header_file = open(header_path, 'r')
         self.header = header_file.read()
         header_file.close()
-        self.atoms = []
-        self.vdws = []
-        self.vdw14s = []
-        self.bonds = []
-        self.angles = []
-        self.ureybrads = []
-        self.torsions = []
-        self.impropers = []
-        self.charges = []
-        self.biotypes = []
-        self.parse(file_path)
+        self.file_path = file_path
+        self.atoms = atoms
+        self.vdws = vdws
+        self.vdw14s = vdw14s
+        self.bonds = bonds
+        self.angles = angles
+        self.ureybrads = ureybrads
+        self.torsions = torsions
+        self.impropers = impropers
+        self.charges = charges
+        self.biotypes = biotypes
+
+    @classmethod
+    def from_file(cls, file_path, header_path):
+        atoms, vdws, vdw14s, bonds, angles, ureybrads, torsions, impropers, charges, biotypes = cls.parse(file_path)
+        return cls(file_path, header_path, atoms, vdws, vdw14s, bonds, angles, ureybrads, torsions, impropers, charges,
+                   biotypes)
 
     def __str__(self):
         ret = StringIO()
@@ -56,39 +64,90 @@ class Charmm:
 
         return ret.getvalue()
 
-    def parse(self, file_path):
+    @staticmethod
+    def parse(file_path):
         file = open(file_path, 'r')
         file_contents = file.read()
         file.close()
         lines = file_contents.split('\n')
-
+        atoms = []
+        vdws = []
+        vdw14s = []
+        bonds = []
+        angles = []
+        ureybrads = []
+        torsions = []
+        impropers = []
+        charges = []
+        biotypes = []
         for line in lines:
             if re.match(r'atom ', line):
-                self.atoms.append(CharmmAtom.parse(line))
+                atoms.append(CharmmAtom.parse(line))
             elif re.match(r'vdw ', line):
-                self.vdws.append(CharmmVDW.parse(line))
+                vdws.append(CharmmVDW.parse(line))
             elif re.match(r'vdw14 ', line):
-                self.vdw14s.append(CharmmVDW14.parse(line))
+                vdw14s.append(CharmmVDW14.parse(line))
             elif re.match(r'bond ', line):
-                self.bonds.append(CharmmBond.parse(line))
+                bonds.append(CharmmBond.parse(line))
             elif re.match(r'angle ', line):
-                self.angles.append(CharmmAngle.parse(line))
+                angles.append(CharmmAngle.parse(line))
             elif re.match(r'ureybrad ', line):
-                self.ureybrads.append(CharmmUreyBrad.parse(line))
+                ureybrads.append(CharmmUreyBrad.parse(line))
             elif re.match(r'torsion ', line):
-                self.torsions.append(CharmmTorsion.parse(line))
+                torsions.append(CharmmTorsion.parse(line))
             elif re.match(r'improper ', line):
-                self.impropers.append(CharmmImproper.parse(line))
+                impropers.append(CharmmImproper.parse(line))
             elif re.match(r'charge ', line):
-                self.charges.append(CharmmCharge.parse(line))
+                charges.append(CharmmCharge.parse(line))
             elif re.match(r'biotype ', line):
-                self.biotypes.append(CharmmBiotype.parse(line))
+                biotypes.append(CharmmBiotype.parse(line))
+        return atoms, vdws, vdw14s, bonds, angles, ureybrads, torsions, impropers, charges, biotypes
 
     def write_to_file(self, file_name):
         f = open(file_name, 'w')
         f.write(str(self))
         f.close()
         return file_name
+
+    def randomize_bonds(self, bonds, percentage):
+        new_bonds = []
+        for bond in self.bonds:
+            found = False
+            for tbr_bond in bonds:
+                if {bond.atom_class1, bond.atom_class2} in set([int(i) for i in tbr_bond]):
+                    new_bonds.append(bond.random_edit(percentage))
+                    found = True
+                    break
+            if not found:
+                new_bonds.append(bond)
+        return Charmm(self.file_path, self.header_path, self.atoms, self.vdws, self.vdw14s, new_bonds, self.angles,
+                      self.ureybrads, self.torsions, self.impropers, self.charges, self.biotypes)
+
+    def randomize_angles(self, angles, percentage):
+        new_angles = []
+        new_torsions = []
+        for angle in self.impropers:
+            found = False
+            for tbr_angle in angles:
+                if {angle.atom_class1, angle.atom_class2, angle.atom_class3, angle.atom_class4} in set(
+                        [int(i) for i in tbr_angle]):
+                    new_angles.append(angle.random_edit(percentage))
+                    found = True
+                    break
+            if not found:
+                new_angles.append(angle)
+        for torsion in self.torsions:
+            found = False
+            for tbr_angle in angles:
+                if {torsion.atom_class1, torsion.atom_class2, torsion.atom_class3, torsion.atom_class4} in set(
+                        [int(i) for i in tbr_angle]):
+                    new_torsions.append(torsion.random_edit(percentage))
+                    found = True
+                    break
+            if not found:
+                new_torsions.append(torsion)
+        return Charmm(self.file_path, self.header_path, self.atoms, self.vdws, self.vdw14s, self.bonds, self.angles,
+                      self.ureybrads, new_torsions, new_angles, self.charges, self.biotypes)
 
 # charmm = Charmm('../charmm22_start.prm', '../header.txt')
 # file = open('../charmm22_test.prm', 'w')
